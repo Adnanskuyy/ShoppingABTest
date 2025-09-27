@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// This ensures the CharacterController component is automatically added to any object this script is attached to.
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
@@ -19,6 +18,10 @@ public class PlayerController : MonoBehaviour
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;
 
+    // --- NEW ---
+    // A flag to control whether the player can move and look around.
+    private bool canMoveAndLook = true;
+
     void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -30,8 +33,14 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        HandleMovement();
-        HandleLook();
+        // --- NEW ---
+        // We wrap the entire movement and look logic in this check.
+        // If canMoveAndLook is false, these functions won't run.
+        if (canMoveAndLook)
+        {
+            HandleMovement();
+            HandleLook();
+        }
     }
 
     private void HandleMovement()
@@ -64,5 +73,16 @@ public class PlayerController : MonoBehaviour
         rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
         playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+    }
+
+    // --- NEW ---
+    /// <summary>
+    /// A public method that allows other scripts (like our interaction script)
+    /// to enable or disable player movement and looking.
+    /// </summary>
+    /// <param name="state">True to enable movement, false to disable.</param>
+    public void SetMovementAndLook(bool state)
+    {
+        canMoveAndLook = state;
     }
 }

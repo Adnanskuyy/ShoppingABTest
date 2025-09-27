@@ -78,4 +78,3 @@ public class GameManager : MonoBehaviour
         Debug.Log($"ANALYTICS: Sending Session_Start event for {currentVariant.ToString()}");
     }
 }
-

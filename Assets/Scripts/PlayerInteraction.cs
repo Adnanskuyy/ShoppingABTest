@@ -1,74 +1,115 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI; // Required for UI elements
-using System.Collections.Generic; // Required for lists
-using TMPro; // Required for TextMeshPro text elements
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerInteraction : MonoBehaviour
 {
     [Header("Interaction Settings")]
     [SerializeField] private float interactionDistance = 5f;
-    [SerializeField] private LayerMask interactableLayer; // Set this to the layer your products are on
+    [SerializeField] private LayerMask interactableLayer;
 
     [Header("UI References")]
-    [SerializeField] private GameObject interactionPanel; // A panel that holds the button and text
+    [SerializeField] private GameObject interactionPrompt; // A simple UI text like "[E] Interact"
+    [SerializeField] private GameObject interactionPanel; // The main panel with the button
     [SerializeField] private TextMeshProUGUI productNameText;
     [SerializeField] private Button addToCartButton;
-
-    [Header("Cart Display UI")]
     [SerializeField] private TextMeshProUGUI cartContentsText;
 
     private Camera playerCamera;
     private Product currentProduct;
+    private PlayerController playerController; // Reference to the player controller
 
-    // A simple in-memory cart
+    // --- NEW: State Management ---
+    private bool isUIVisible = false;
+
     private Dictionary<string, int> shoppingCart = new Dictionary<string, int>();
 
     void Start()
     {
         playerCamera = GetComponentInChildren<Camera>();
-        interactionPanel.SetActive(false); // Hide UI at start
-        addToCartButton.onClick.AddListener(OnAddToCartClicked); // Wire up the button click
+        playerController = GetComponent<PlayerController>(); // Get the controller component
+
+        interactionPanel.SetActive(false);
+        interactionPrompt.SetActive(false);
+
+        addToCartButton.onClick.AddListener(OnAddToCartClicked);
         UpdateCartDisplay();
     }
 
     void Update()
     {
-        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, interactionDistance, interactableLayer))
+        // If the main UI panel is visible, the only thing we check for is the 'Cancel' button.
+        if (isUIVisible)
         {
-            // We hit a product
-            Product product = hitInfo.collider.GetComponent<Product>();
-            if (product != null)
+            if (Input.GetKeyDown(KeyCode.C))
             {
-                currentProduct = product;
-                ShowInteractionUI(product.productName);
-                return; // Exit early since we found something
+                CloseInteractionPanel();
             }
+            return; // Don't do anything else
         }
 
-        // If we reach here, we are not looking at a product
-        currentProduct = null;
-        HideInteractionUI();
+        // --- Raycast Logic (happens only when not in UI mode) ---
+        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+        Product detectedProduct = null;
+
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, interactionDistance, interactableLayer))
+        {
+            if (hitInfo.collider.TryGetComponent<Product>(out detectedProduct))
+            {
+                currentProduct = detectedProduct;
+                interactionPrompt.SetActive(true); // Show the small "[E] Interact" prompt
+            }
+            else
+            {
+                currentProduct = null;
+                interactionPrompt.SetActive(false);
+            }
+        }
+        else
+        {
+            currentProduct = null;
+            interactionPrompt.SetActive(false);
+        }
+
+        // Check for the interaction input ONLY if we are looking at a product.
+        if (currentProduct != null && (Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(0)))
+        {
+            OpenInteractionPanel();
+        }
     }
 
-    private void ShowInteractionUI(string name)
+    private void OpenInteractionPanel()
     {
+        isUIVisible = true;
+        interactionPrompt.SetActive(false); // Hide the small prompt
+
+        // Show and populate the main panel
         interactionPanel.SetActive(true);
-        productNameText.text = "Product: " + name;
+        productNameText.text = "Product: " + currentProduct.productName;
+
+        // --- CRITICAL: Freeze player and show cursor ---
+        playerController.SetMovementAndLook(false);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
-    private void HideInteractionUI()
+    private void CloseInteractionPanel()
     {
+        isUIVisible = false;
         interactionPanel.SetActive(false);
+
+        // --- CRITICAL: Unfreeze player and hide cursor ---
+        playerController.SetMovementAndLook(true);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void OnAddToCartClicked()
     {
         if (currentProduct == null) return;
 
-        // Add to our dictionary-based cart
         string productName = currentProduct.productName;
         if (shoppingCart.ContainsKey(productName))
         {
@@ -81,8 +122,6 @@ public class PlayerInteraction : MonoBehaviour
 
         Debug.Log($"Added {productName} to cart. Total: {shoppingCart[productName]}");
 
-        // --- SEND BYTEBREW EVENT ---
-        // This is the critical data tracking step.
         var eventParams = new Dictionary<string, string>
         {
             { "ProductName", productName },
@@ -92,10 +131,14 @@ public class PlayerInteraction : MonoBehaviour
         Debug.Log("ANALYTICS: Sent Product_Added_To_Cart event.");
 
         UpdateCartDisplay();
+
+        // After adding to cart, automatically close the panel
+        CloseInteractionPanel();
     }
 
     private void UpdateCartDisplay()
     {
+        // ... existing code, no changes needed here ...
         string cartText = "Cart:\n";
         if (shoppingCart.Count == 0)
         {
