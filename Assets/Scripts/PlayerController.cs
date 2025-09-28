@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
-    [SerializeField] private float moveSpeed = 5.0f;
+    [SerializeField] private float moveSpeed = 6.0f;
     [SerializeField] private float gravity = -9.81f;
 
     [Header("Look Settings")]
@@ -18,24 +16,28 @@ public class PlayerController : MonoBehaviour
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;
 
-    // --- NEW ---
-    // A flag to control whether the player can move and look around.
+    // The critical variable that controls movement.
     private bool canMoveAndLook = true;
 
     void Start()
     {
         characterController = GetComponent<CharacterController>();
-
-        // Lock cursor to the center of the screen and hide it
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        // --- DEBUGGING STEP 2: Confirm the subscription ---
+        Debug.Log("<color=green>PlayerController:</color> Subscribing to SetPlayerMovement event.");
+        GameEvents.onSetPlayerMovement += SetMovementAndLook;
+    }
+
+    private void OnDestroy()
+    {
+        GameEvents.onSetPlayerMovement -= SetMovementAndLook;
     }
 
     void Update()
     {
-        // --- NEW ---
-        // We wrap the entire movement and look logic in this check.
-        // If canMoveAndLook is false, these functions won't run.
+        // The Update loop now only checks the boolean.
         if (canMoveAndLook)
         {
             HandleMovement();
@@ -43,46 +45,35 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // This method is called by the event from the UIManager.
+    private void SetMovementAndLook(bool state)
+    {
+        // --- DEBUGGING STEP 3: Confirm the event was received ---
+        Debug.Log($"<color=green>PlayerController:</color> Received SetPlayerMovement event! Setting canMoveAndLook to <color=yellow>{state}</color>.");
+        canMoveAndLook = state;
+    }
+
     private void HandleMovement()
     {
-        // We are grounded, so recalculate move direction based on axes
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
-
-        // Get input from keyboard
-        float curSpeedX = moveSpeed * Input.GetAxis("Vertical"); // Forward/Backward
-        float curSpeedY = moveSpeed * Input.GetAxis("Horizontal"); // Left/Right
-
+        float curSpeedX = moveSpeed * Input.GetAxis("Vertical");
+        float curSpeedY = moveSpeed * Input.GetAxis("Horizontal");
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
-        // Apply gravity.
-        moveDirection.y = gravity;
+        if (!characterController.isGrounded)
+        {
+            moveDirection.y += gravity * Time.deltaTime;
+        }
 
-        // Move the controller
         characterController.Move(moveDirection * Time.deltaTime);
     }
 
     private void HandleLook()
     {
-        if (playerCamera == null) return;
-
-        // Player rotation (left/right)
-        transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
-
-        // Camera rotation (up/down)
         rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
         playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-    }
-
-    // --- NEW ---
-    /// <summary>
-    /// A public method that allows other scripts (like our interaction script)
-    /// to enable or disable player movement and looking.
-    /// </summary>
-    /// <param name="state">True to enable movement, false to disable.</param>
-    public void SetMovementAndLook(bool state)
-    {
-        canMoveAndLook = state;
+        transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
     }
 }
