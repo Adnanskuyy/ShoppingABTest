@@ -11,19 +11,21 @@ public class ShoppingCart
     // The payload is the updated dictionary of items.
     public event Action<Dictionary<string, int>> onCartUpdated;
 
-    public void AddItem(Product product)
+    public void AddItem(string productName)
     {
-        string productName = product.productName;
         if (items.ContainsKey(productName))
         {
             items[productName]++;
         }
         else
         {
-            items.Add(productName, 1);
+            items[productName] = 1;
         }
-
-        // Fire the event to notify listeners (like the UI and Analytics) that the cart has changed.
         onCartUpdated?.Invoke(items);
+    }
+
+    public Dictionary<string, int> GetItems()
+    {
+        return items;
     }
 }

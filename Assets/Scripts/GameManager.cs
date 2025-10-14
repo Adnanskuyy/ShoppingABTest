@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     {
         cart.onCartUpdated += UIManager.Instance.UpdateCartDisplay;
         UIManager.Instance.UpdateCartDisplay(cart.items);
+        UIManager.Instance.UpdateCartDisplay(cart.GetItems());
 
         AnalyticsManager.Instance.Initialize();
 
@@ -59,6 +60,8 @@ public class GameManager : MonoBehaviour
     {
         if (product == null) return;
         lastAddedProduct = product;
-        cart.AddItem(product);
+        cart.AddItem(product.productName);
+        UIManager.Instance.ShowNotification(product.productName);
+        UIManager.Instance.UpdateCartDisplay(cart.GetItems());
     }
 }
