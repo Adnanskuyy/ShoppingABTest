@@ -1185,7 +1185,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -508, y: 491}
+  m_AnchoredPosition: {x: -500, y: 475}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &540362433
@@ -1235,10 +1235,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 58.75
-  m_fontSizeBase: 36
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -1271,7 +1271,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -72.01303, w: -28.494324}
+  m_margin: {x: 0, y: 0, z: -101.11673, w: -28.494324}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1314,8 +1314,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 379f5950a220d2a45886d1ee3d2b0f33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentVariant: 0
+  currentVariant: 1
   shoppingTrolleyObject: {fileID: 602697722}
+  editorVariantOverride: 0
 --- !u!4 &596674448
 Transform:
   m_ObjectHideFlags: 0
@@ -1343,13 +1344,13 @@ GameObject:
   - component: {fileID: 602697726}
   - component: {fileID: 602697725}
   - component: {fileID: 602697724}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Trolley_visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &602697723
 Transform:
   m_ObjectHideFlags: 0
@@ -1359,7 +1360,7 @@ Transform:
   m_GameObject: {fileID: 602697722}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.261, z: -1}
+  m_LocalPosition: {x: 0, y: -0.261, z: 1.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1648,7 +1649,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -831, y: 491}
+  m_AnchoredPosition: {x: -800, y: 475}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &775894239
@@ -1698,10 +1699,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70.25
-  m_fontSizeBase: 36
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
