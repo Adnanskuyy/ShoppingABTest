@@ -63,8 +63,62 @@ PrefabInstance:
       propertyPath: m_Name
       value: FreshMango
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 02073d227563c8c4d99bcba655f0695b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 02073d227563c8c4d99bcba655f0695b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4771863981696632164}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 02073d227563c8c4d99bcba655f0695b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1061210202368203174}
   m_SourcePrefab: {fileID: 100100000, guid: 02073d227563c8c4d99bcba655f0695b, type: 3}
+--- !u!1 &2295372770990432437 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 02073d227563c8c4d99bcba655f0695b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1376875042325929444}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4771863981696632164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2295372770990432437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58b34f70af979a944914efe6b19c242b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <productName>k__BackingField: Fresh Mango
+  <price>k__BackingField: 10
+--- !u!65 &1061210202368203174
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2295372770990432437}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.3080982, y: 0.30588517, z: 0.1224927}
+  m_Center: {x: 0.0000006109478, y: 0.15294258, z: 0}

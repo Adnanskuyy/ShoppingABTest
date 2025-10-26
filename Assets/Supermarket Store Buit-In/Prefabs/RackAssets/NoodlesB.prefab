@@ -63,8 +63,62 @@ PrefabInstance:
       propertyPath: m_Name
       value: NoodlesB
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 46c3c8d1c2bd0954db44eb7e20986d40,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 46c3c8d1c2bd0954db44eb7e20986d40,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1416518171824943825}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 46c3c8d1c2bd0954db44eb7e20986d40,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6074585653964262699}
   m_SourcePrefab: {fileID: 100100000, guid: 46c3c8d1c2bd0954db44eb7e20986d40, type: 3}
+--- !u!1 &7110592258018743828 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 46c3c8d1c2bd0954db44eb7e20986d40,
+    type: 3}
+  m_PrefabInstance: {fileID: 7956888770145725253}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1416518171824943825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7110592258018743828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58b34f70af979a944914efe6b19c242b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <productName>k__BackingField: Noodles B
+  <price>k__BackingField: 10
+--- !u!65 &6074585653964262699
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7110592258018743828}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.12220828, y: 0.2377639, z: 0.10868471}
+  m_Center: {x: 0, y: 0.11888195, z: 0}

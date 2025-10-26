@@ -63,8 +63,62 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wipes
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0cc9189a2c21f764ab9246b81af5192c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0cc9189a2c21f764ab9246b81af5192c,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1676620206162884889}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0cc9189a2c21f764ab9246b81af5192c,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5209679745159795356}
   m_SourcePrefab: {fileID: 100100000, guid: 0cc9189a2c21f764ab9246b81af5192c, type: 3}
+--- !u!1 &3577799080495841388 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0cc9189a2c21f764ab9246b81af5192c,
+    type: 3}
+  m_PrefabInstance: {fileID: 4424659774023515453}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1676620206162884889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3577799080495841388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58b34f70af979a944914efe6b19c242b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <productName>k__BackingField: Wipes
+  <price>k__BackingField: 10
+--- !u!65 &5209679745159795356
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3577799080495841388}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.32496223, y: 0.22669998, z: 0.07697634}
+  m_Center: {x: 0.00000061345554, y: 0.10557426, z: 0.0000000031463545}

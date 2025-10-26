@@ -63,8 +63,105 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mustard
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: dd68c62c39522c749b11f87de6f264ff,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dd68c62c39522c749b11f87de6f264ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8466652637576918536}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dd68c62c39522c749b11f87de6f264ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5321477690764362507}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dd68c62c39522c749b11f87de6f264ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -5617414492229118299}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: dd68c62c39522c749b11f87de6f264ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4095826962265271744}
   m_SourcePrefab: {fileID: 100100000, guid: dd68c62c39522c749b11f87de6f264ff, type: 3}
+--- !u!1 &5708534145250945415 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: dd68c62c39522c749b11f87de6f264ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 4898122398547825878}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8466652637576918536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5708534145250945415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58b34f70af979a944914efe6b19c242b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <productName>k__BackingField: Mustard
+  <price>k__BackingField: 10
+--- !u!65 &5321477690764362507
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5708534145250945415}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.26231754, y: 0.37292603, z: 0.08041262}
+  m_Center: {x: 0.0000003054739, y: 0.18646286, z: -0.000000098720214}
+--- !u!114 &-5617414492229118299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5708534145250945415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58b34f70af979a944914efe6b19c242b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <productName>k__BackingField: Mustard
+  <price>k__BackingField: 10
+--- !u!65 &-4095826962265271744
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5708534145250945415}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.26231748, y: 0.37292603, z: 0.0804126}
+  m_Center: {x: 0.0000003054738, y: 0.18646286, z: -0.00000009872019}

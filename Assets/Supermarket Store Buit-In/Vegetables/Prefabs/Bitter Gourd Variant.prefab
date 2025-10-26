@@ -5,55 +5,127 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf,
+        type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf,
+        type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf,
+        type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf,
+        type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf,
+        type: 3}
       propertyPath: m_LocalRotation.y
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf,
+        type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 111360a2056f75b478acab79b4b7f4cf,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 111360a2056f75b478acab79b4b7f4cf, type: 3}
+    - target: {fileID: 919132149155446097, guid: 111360a2056f75b478acab79b4b7f4cf,
+        type: 3}
       propertyPath: m_Name
-      value: Bitter Gourd
+      value: Bitter Gourd Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 111360a2056f75b478acab79b4b7f4cf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 111360a2056f75b478acab79b4b7f4cf,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4938490437704946968}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 111360a2056f75b478acab79b4b7f4cf,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3020949492661247606}
   m_SourcePrefab: {fileID: 100100000, guid: 111360a2056f75b478acab79b4b7f4cf, type: 3}
+--- !u!1 &887491230997151769 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 111360a2056f75b478acab79b4b7f4cf,
+    type: 3}
+  m_PrefabInstance: {fileID: 40648134888602952}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4938490437704946968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 887491230997151769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58b34f70af979a944914efe6b19c242b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <productName>k__BackingField: Bitter Gourd
+  <price>k__BackingField: 10
+--- !u!136 &3020949492661247606
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 887491230997151769}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.056715045
+  m_Height: 0.032060646
+  m_Direction: 1
+  m_Center: {x: -2.390883e-10, y: 0.015508126, z: 4.6214962e-10}

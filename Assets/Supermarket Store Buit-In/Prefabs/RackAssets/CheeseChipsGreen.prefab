@@ -63,8 +63,62 @@ PrefabInstance:
       propertyPath: m_Name
       value: CheeseChipsGreen
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: df7583bc52dbff14e96642184a18a0df,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: df7583bc52dbff14e96642184a18a0df,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6635788134141791604}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: df7583bc52dbff14e96642184a18a0df,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5644634878118494924}
   m_SourcePrefab: {fileID: 100100000, guid: df7583bc52dbff14e96642184a18a0df, type: 3}
+--- !u!1 &4887423485199677108 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: df7583bc52dbff14e96642184a18a0df,
+    type: 3}
+  m_PrefabInstance: {fileID: 5697884837700389861}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6635788134141791604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4887423485199677108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58b34f70af979a944914efe6b19c242b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <productName>k__BackingField: Cheese Chips Green
+  <price>k__BackingField: 10
+--- !u!65 &5644634878118494924
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4887423485199677108}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.20574462, y: 0.2552391, z: 0.07245284}
+  m_Center: {x: 0.0000006109476, y: 0.12237884, z: -0.00000007636845}

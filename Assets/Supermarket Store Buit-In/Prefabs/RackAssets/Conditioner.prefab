@@ -63,8 +63,64 @@ PrefabInstance:
       propertyPath: m_Name
       value: Conditioner
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 29eef40c3654fb5408c530d12cf64458,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 29eef40c3654fb5408c530d12cf64458,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7891451174969364424}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 29eef40c3654fb5408c530d12cf64458,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6284623281185920110}
   m_SourcePrefab: {fileID: 100100000, guid: 29eef40c3654fb5408c530d12cf64458, type: 3}
+--- !u!1 &4281297038594642440 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 29eef40c3654fb5408c530d12cf64458,
+    type: 3}
+  m_PrefabInstance: {fileID: 4011389128822271833}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7891451174969364424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4281297038594642440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58b34f70af979a944914efe6b19c242b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <productName>k__BackingField: Conditioner
+  <price>k__BackingField: 10
+--- !u!136 &6284623281185920110
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4281297038594642440}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.038181152
+  m_Height: 0.34186584
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.17093292, z: 0}

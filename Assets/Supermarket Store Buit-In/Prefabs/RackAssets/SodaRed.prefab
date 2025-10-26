@@ -63,8 +63,64 @@ PrefabInstance:
       propertyPath: m_Name
       value: SodaRed
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d18a329e6666c794f9cc0b0d747a9531,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d18a329e6666c794f9cc0b0d747a9531,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4531618895901219976}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d18a329e6666c794f9cc0b0d747a9531,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 379484112358174713}
   m_SourcePrefab: {fileID: 100100000, guid: d18a329e6666c794f9cc0b0d747a9531, type: 3}
+--- !u!1 &926889596555776346 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d18a329e6666c794f9cc0b0d747a9531,
+    type: 3}
+  m_PrefabInstance: {fileID: 8322189430057995}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4531618895901219976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 926889596555776346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58b34f70af979a944914efe6b19c242b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <productName>k__BackingField: Soda Red
+  <price>k__BackingField: 10
+--- !u!136 &379484112358174713
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 926889596555776346}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.06031862
+  m_Height: 0.19854003
+  m_Direction: 1
+  m_Center: {x: -0.00000060908513, y: 0.099270016, z: 0}

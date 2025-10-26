@@ -63,8 +63,62 @@ PrefabInstance:
       propertyPath: m_Name
       value: BakeryFreshBreadA
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 33e57a45a550dfd4ea2e2d4cba44fa77,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 33e57a45a550dfd4ea2e2d4cba44fa77,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5464809536288890662}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 33e57a45a550dfd4ea2e2d4cba44fa77,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6847022572366802737}
   m_SourcePrefab: {fileID: 100100000, guid: 33e57a45a550dfd4ea2e2d4cba44fa77, type: 3}
+--- !u!1 &1630479474493201106 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 33e57a45a550dfd4ea2e2d4cba44fa77,
+    type: 3}
+  m_PrefabInstance: {fileID: 1901022208482256771}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5464809536288890662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1630479474493201106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58b34f70af979a944914efe6b19c242b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <productName>k__BackingField: Bakery Fresh Bread A
+  <price>k__BackingField: 10
+--- !u!65 &6847022572366802737
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1630479474493201106}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.12220825, y: 0.2377639, z: 0.10868469}
+  m_Center: {x: 0, y: 0.11888195, z: 0}

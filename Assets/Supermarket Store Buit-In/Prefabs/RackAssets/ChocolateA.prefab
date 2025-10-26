@@ -63,8 +63,62 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChocolateA
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: abc897dd783b2fa48adcd30e566b9467,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: abc897dd783b2fa48adcd30e566b9467,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -3042981820404765223}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: abc897dd783b2fa48adcd30e566b9467,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -5565737672989487162}
   m_SourcePrefab: {fileID: 100100000, guid: abc897dd783b2fa48adcd30e566b9467, type: 3}
+--- !u!1 &8552104194976979913 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: abc897dd783b2fa48adcd30e566b9467,
+    type: 3}
+  m_PrefabInstance: {fileID: 8822064198406514328}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-3042981820404765223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8552104194976979913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58b34f70af979a944914efe6b19c242b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <productName>k__BackingField: Chocolate A
+  <price>k__BackingField: 10
+--- !u!65 &-5565737672989487162
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8552104194976979913}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.23621552, y: 0.078177184, z: 0.07513855}
+  m_Center: {x: 0, y: 0.039088592, z: 0}
