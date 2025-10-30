@@ -13,7 +13,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI interactionPromptText; // Child TextMeshPro
     [SerializeField] private GameObject productPanel; // Parent GameObject with Panel bg
     [SerializeField] private TextMeshProUGUI productNameText; // Child TextMeshPro
-    [SerializeField] private TextMeshProUGUI productPriceText; // Child TextMeshPro (NEW)
     [SerializeField] private Button addToCartButton; // Child Button
     [SerializeField] private Button closeButton; // Child Button (NEW)
 
@@ -100,7 +99,6 @@ public class UIManager : MonoBehaviour
 
         // Update panel content
         productNameText.text = product.productName;
-        productPriceText.text = $"Price: ${product.price:F2}"; // Format price nicely
 
         // Freeze player and show cursor
         GameEvents.TriggerSetPlayerMovement(false);
