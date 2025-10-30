@@ -10,6 +10,7 @@ public class InputManager : MonoBehaviour
     // Events that other systems can subscribe to.
     public event Action onInteractPressed;
     public event Action onCancelPressed;
+    public event Action onToggleCartPressed;
 
     private void Awake()
     {
@@ -35,6 +36,11 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C))
         {
             onCancelPressed?.Invoke();
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            onToggleCartPressed?.Invoke();
         }
     }
 }
