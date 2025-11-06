@@ -1,8 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-// Singleton to handle all analytics calls.
-// This is the ONLY script in the entire project that should know about ByteBrew.
+/// <summary>
+/// This is the ONLY script that talks to ByteBrew.
+/// It has been refactored to be a simple, "dumb" logger.
+/// It doesn't know *why* events are sent, it just sends them.
+/// </summary>
 public class AnalyticsManager : MonoBehaviour
 {
     public static AnalyticsManager Instance { get; private set; }
@@ -18,48 +21,51 @@ public class AnalyticsManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void Initialize()
+    private void Start()
     {
-        // Subscribe to the OnCartUpdated event from the ShoppingCart.
-        GameManager.Instance.cart.onCartUpdated += OnCartUpdated;
-
-        // Initialize ByteBrew SDK.
+        // Initialize ByteBrew SDK
+        // We only do this in a real build.
+#if !UNITY_EDITOR && UNITY_WEBGL
         ByteBrewSDK.ByteBrew.InitializeByteBrew();
+#endif
     }
 
-    private void OnDestroy()
-    {
-        // Unsubscribe
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.cart.onCartUpdated -= OnCartUpdated;
-        }
-    }
+    // --- This script no longer needs OnDestroy or Initialize methods ---
+    // --- It no longer subscribes to any events ---
 
-    // This method is called whenever the shopping cart changes.
-    private void OnCartUpdated(Dictionary<string, int> items)
-    {
-        // For simplicity, we'll send an event for the last added item.
-        // A more complex implementation could send the entire cart state.
-        SendProductAddedEvent(GameManager.Instance.lastAddedProduct);
-    }
-
-    private void SendProductAddedEvent(Product product)
+    /// <summary>
+    /// Sends a "Product Added" event to ByteBrew, tagged with the participant's ID.
+    /// </summary>
+    public void SendProductAddedEvent(Product product, string participantID)
     {
         if (product == null) return;
 
         var eventParams = new Dictionary<string, string>
         {
             { "ProductName", product.productName },
-            { "Variant", GameManager.Instance.currentVariant.ToString() }
+            { "qualtrics_id", participantID } // Add the Qualtrics ID
         };
+
+        // Note: We no longer need to send the "Variant" in this event,
+        // because the Session_Start event has already tagged this entire session
+        // with that user's variant. It's redundant data.
+
         ByteBrewSDK.ByteBrew.NewCustomEvent("Product_Added_To_Cart", eventParams);
-        Debug.Log($"ANALYTICS: Sent Product_Added_To_Cart event for {product.productName}.");
+        Debug.Log($"ANALYTICS: Sent Product_Added_To_Cart for {product.productName} (ID: {participantID})");
     }
 
-    public void SendSessionStartEvent(GameManager.Variant variant)
+    /// <summary>
+    /// Sends a "Session Start" event, tagging the session with the participant's ID and variant.
+    /// </summary>
+    public void SendSessionStartEvent(string variant, string participantID)
     {
-        ByteBrewSDK.ByteBrew.NewCustomEvent("Session_Start", "Variant:" + variant.ToString());
-        Debug.Log($"ANALYTICS: Sending Session_Start event for {variant.ToString()}");
+        var eventParams = new Dictionary<string, string>
+        {
+            { "Variant", variant },
+            { "qualtrics_id", participantID } // Add the Qualtrics ID
+        };
+
+        ByteBrewSDK.ByteBrew.NewCustomEvent("Session_Start", eventParams);
+        Debug.Log($"ANALYTICS: Sent Session_Start for Variant {variant} (ID: {participantID})");
     }
 }

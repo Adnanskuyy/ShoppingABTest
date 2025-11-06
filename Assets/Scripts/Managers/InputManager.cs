@@ -26,7 +26,7 @@ public class InputManager : MonoBehaviour
     void Update()
     {
         // Check for the interact key (E or Left Mouse)
-        if (Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             // Fire the event if there are any listeners.
             onInteractPressed?.Invoke();

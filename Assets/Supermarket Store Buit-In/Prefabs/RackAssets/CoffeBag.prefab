@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b34f70af979a944914efe6b19c242b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <productName>k__BackingField: Coffe Bag
+  <productName>k__BackingField: Coffee Bag
   <price>k__BackingField: 10
 --- !u!65 &6111148544553347770
 BoxCollider:
