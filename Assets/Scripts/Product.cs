@@ -7,7 +7,7 @@ public class Product : MonoBehaviour, IInteractable
     [field: SerializeField] public float price { get; private set; } = 10.0f;
 
     // This is the implementation of the property from the IInteractable interface.
-    public string InteractionPrompt => $"Interact with {productName}";
+    public string InteractionPrompt => $"Press 'E' to Interact with {productName}";
 
     // This is the implementation of the method from the IInteractable interface.
     public bool Interact(PlayerInteractor interactor)

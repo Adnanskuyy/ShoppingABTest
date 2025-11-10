@@ -28,4 +28,14 @@ public class ShoppingCart
     {
         return items;
     }
+
+    public int GetTotalItemCount()
+    {
+        int total = 0;
+        foreach (int count in items.Values)
+        {
+            total += count;
+        }
+        return total;
+    }
 }

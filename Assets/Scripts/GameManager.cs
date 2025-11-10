@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using ByteBrewSDK;
 
@@ -6,13 +8,19 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [Header("Variant Setup")]
-    // Drag your "ViewModel_Rig" or "Arm_Basket" object here
     [SerializeField] private GameObject trolleyObject;
 
     public ShoppingCart cart { get; private set; }
     public Product lastAddedProduct { get; private set; }
     public Variant currentVariant { get; private set; }
     public enum Variant { A_Trolley, B_NoTrolley }
+
+    [Header("Experiment Settings")]
+    [Tooltip("The maximum time for the experiment in seconds. (e.G., 300 = 5 minutes)")]
+    [SerializeField] private float maxExperimentDuration = 300f;
+    public event Action<string> onExperimentEnded;
+
+    private bool isExperimentOver = false;
 
     private void Awake()
     {
@@ -66,18 +74,66 @@ public class GameManager : MonoBehaviour
 
     public void AddItemToCart(Product product)
     {
-        if (product == null) return;
+        if (isExperimentOver) return; // Don't allow adding items after game ends
 
         lastAddedProduct = product;
         cart.AddItem(product.productName);
         UIManager.Instance.ShowNotification(product.productName);
 
-        // --- NEW ANALYTICS CALL ---
-        // Tell the AnalyticsManager to send the product event,
-        // passing it the data it needs.
         AnalyticsManager.Instance.SendProductAddedEvent(
             product,
             UrlParameterReader.Instance.ParticipantID
         );
+    }
+
+    public void RequestEndExperiment()
+    {
+        if (isExperimentOver) return;
+        UIManager.Instance.ShowConfirmationPanel(true);
+    }
+
+    // This is called by the UIManager's "Cancel" button
+    public void CancelEndExperiment()
+    {
+        if (isExperimentOver) return;
+        UIManager.Instance.ShowConfirmationPanel(false);
+    }
+
+    // This is called by the UIManager's "Confirm" button
+    public void ConfirmEndExperiment()
+    {
+        if (isExperimentOver) return;
+        TriggerExperimentEnd("User Finished");
+    }
+
+    private IEnumerator ExperimentTimer()
+    {
+        yield return new WaitForSeconds(maxExperimentDuration);
+        // If the game isn't already over, force it to end.
+        TriggerExperimentEnd("Timer Expired");
+    }
+
+    private void TriggerExperimentEnd(string reason)
+    {
+        if (isExperimentOver) return; // Ensure this only runs once
+        isExperimentOver = true;
+
+        StopAllCoroutines(); // Stops the master timer
+        GameEvents.TriggerSetPlayerMovement(false); // Freeze player
+
+        string finalCode = GenerateFinalCode();
+
+        // Fire the event to tell the UIManager to show the final screen
+        onExperimentEnded?.Invoke(finalCode);
+
+        Debug.Log($"Experiment ENDED. Reason: {reason}. Final Code: {finalCode}");
+    }
+
+    private string GenerateFinalCode()
+    {
+        // We can use the ByteBrew ID, or for simplicity, the one from the URL
+        string uid = UrlParameterReader.Instance.ParticipantID;
+        int items = cart.GetTotalItemCount();
+        return $"{uid}-{items}";
     }
 }

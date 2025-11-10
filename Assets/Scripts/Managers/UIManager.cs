@@ -28,8 +28,21 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button closeCartButton; // The 'X' button on the cart panel
     [SerializeField] private Transform cartItemContainer; // The parent object with VerticalLayoutGroup
     [SerializeField] private GameObject cartItemPrefab; // The TextMeshPro prefab for list items
+    [SerializeField] private Button finishShoppingButton; // The button to finish shopping (NEW)
+
+    [Header("Confirmation Panel UI")]
+    [SerializeField] private GameObject confirmationPanel;
+    [SerializeField] private Button confirmEndButton;
+    [SerializeField] private Button cancelEndButton;
+
+    [Header("End Screen UI")]
+    [SerializeField] private GameObject endScreenPanel;
+    [SerializeField] private TextMeshProUGUI finalCodeText;
+    [SerializeField] private Button copyCodeButton;
+    [SerializeField] private TextMeshProUGUI copyButtonText;
     private Coroutine notificationCoroutine;
     private Product currentProductForPanel;
+    private string generatedFinalCode;
 
     private void Awake()
     {
@@ -48,24 +61,36 @@ public class UIManager : MonoBehaviour
         GameEvents.onShowInteractionPrompt += ShowInteractionPrompt;
         GameEvents.onHideInteractionPrompt += HideInteractionPrompt;
         GameEvents.onShowProductPanel += ShowProductPanel;
-        InputManager.Instance.onCancelPressed += HideProductPanel; // 'C' key closes panel
+        InputManager.Instance.onCancelPressed += HideProductPanel;
         InputManager.Instance.onToggleCartPressed += ToggleCartPanel;
+        GameManager.Instance.onExperimentEnded += ShowEndScreen;
 
         // Set up button listeners
-        addToCartButton.onClick.AddListener(OnAddToCartClicked);
-        closeButton.onClick.AddListener(HideProductPanel); // 'X' button closes panel
+        if (addToCartButton != null) addToCartButton.onClick.AddListener(OnAddToCartClicked);
+        if (closeButton != null) closeButton.onClick.AddListener(HideProductPanel);
         if (closeCartButton != null) closeCartButton.onClick.AddListener(HideCartPanel);
 
+        if (finishShoppingButton != null) finishShoppingButton.onClick.AddListener(OnFinishShoppingClicked);
+        if (confirmEndButton != null) confirmEndButton.onClick.AddListener(OnConfirmEndClicked);
+        if (cancelEndButton != null) cancelEndButton.onClick.AddListener(OnCancelEndClicked);
+        if (copyCodeButton != null) copyCodeButton.onClick.AddListener(OnCopyCodeClicked);
+
         // Initial UI State
-        interactionPrompt.SetActive(false);
-        productPanel.SetActive(false);
-        notificationPanel.SetActive(false);
+        if (interactionPrompt != null) interactionPrompt.SetActive(false);
+        if (productPanel != null) productPanel.SetActive(false);
+        if (notificationPanel != null) notificationPanel.SetActive(false);
         if (cartPanel != null) cartPanel.SetActive(false);
-        UpdateCartDisplay(new Dictionary<string, int>()); // Initialize counters
+        if (confirmationPanel != null) confirmationPanel.SetActive(false);
+        if (endScreenPanel != null) endScreenPanel.SetActive(false);
 
         // Activate persistent HUD elements as per client request
         if (cartHintPanel != null) cartHintPanel.SetActive(true);
         if (gameGuidePanel != null) gameGuidePanel.SetActive(true);
+
+        if (GameManager.Instance != null && GameManager.Instance.cart != null)
+        {
+            UpdateCartDisplay(GameManager.Instance.cart.GetItems());
+        }
     }
 
     private void OnDestroy()
@@ -75,12 +100,16 @@ public class UIManager : MonoBehaviour
         GameEvents.onHideInteractionPrompt -= HideInteractionPrompt;
         GameEvents.onShowProductPanel -= ShowProductPanel;
 
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.onExperimentEnded -= ShowEndScreen;
+        }
+
         if (InputManager.Instance != null)
         {
             InputManager.Instance.onCancelPressed -= HideProductPanel;
             InputManager.Instance.onToggleCartPressed -= ToggleCartPanel;
         }
-        // Button listeners are automatically cleaned up
     }
 
     private void ShowInteractionPrompt(GameObject target, string promptText)
@@ -130,8 +159,6 @@ public class UIManager : MonoBehaviour
         if (currentProductForPanel != null)
         {
             GameManager.Instance.AddItemToCart(currentProductForPanel);
-            // Hiding the panel is now handled by the event system if needed,
-            // or simply close it directly after adding. Let's close it.
             HideProductPanel();
         }
     }
@@ -193,24 +220,21 @@ public class UIManager : MonoBehaviour
 
     private void ToggleCartPanel()
     {
-        if (cartPanel == null) return; // Safety check
+        if (cartPanel == null) return;
 
         bool isOpening = !cartPanel.activeSelf;
         cartPanel.SetActive(isOpening);
 
         if (isOpening)
         {
-            // Update the list content WHEN opening
             UpdateCartDisplay(GameManager.Instance.cart.GetItems());
 
-            // Freeze player and show cursor
             GameEvents.TriggerSetPlayerMovement(false);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
         else
         {
-            // Unfreeze player and hide cursor
             GameEvents.TriggerSetPlayerMovement(true);
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -222,6 +246,65 @@ public class UIManager : MonoBehaviour
         if (cartPanel != null && cartPanel.activeSelf)
         {
             ToggleCartPanel(); // Just call the toggle function to close it
+        }
+    }
+
+    private void OnFinishShoppingClicked()
+    {
+        GameManager.Instance.RequestEndExperiment();
+    }
+
+    public void ShowConfirmationPanel(bool show)
+    {
+        if (confirmationPanel != null)
+        {
+            confirmationPanel.SetActive(show);
+        }
+    }
+
+    private void OnConfirmEndClicked()
+    {
+        ShowConfirmationPanel(false); // Hide this panel
+        GameManager.Instance.ConfirmEndExperiment();
+    }
+
+    private void OnCancelEndClicked()
+    {
+        GameManager.Instance.CancelEndExperiment();
+    }
+
+    public void ShowEndScreen(string finalCode)
+    {
+        // Hide ALL other UI elements first
+        if (interactionPrompt != null) interactionPrompt.SetActive(false);
+        if (productPanel != null) productPanel.SetActive(false);
+        if (notificationPanel != null) notificationPanel.SetActive(false);
+        if (cartPanel != null) cartPanel.SetActive(false);
+        if (confirmationPanel != null) confirmationPanel.SetActive(false);
+        if (cartHintPanel != null) cartHintPanel.SetActive(false);
+        if (gameGuidePanel != null) gameGuidePanel.SetActive(false);
+
+        // Show the final screen
+        if (endScreenPanel != null)
+        {
+            endScreenPanel.SetActive(true);
+            generatedFinalCode = finalCode; // Store the code
+            finalCodeText.text = $"Thank you for your participation.\n\nPlease copy this completion code and paste it into the survey:\n\n{generatedFinalCode}";
+
+            // Reset button text just in case
+            if (copyButtonText != null) copyButtonText.text = "Copy Code";
+        }
+    }
+
+    private void OnCopyCodeClicked()
+    {
+        GUIUtility.systemCopyBuffer = generatedFinalCode;
+        Debug.Log($"Copied to clipboard: {generatedFinalCode}");
+
+        // Give user feedback
+        if (copyButtonText != null)
+        {
+            copyButtonText.text = "Copied!";
         }
     }
 }
