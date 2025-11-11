@@ -20,7 +20,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject notificationPanel;
     [SerializeField] private TextMeshProUGUI notificationText;
     [SerializeField] private float notificationDuration = 2.5f;
-    [SerializeField] private GameObject cartHintPanel; // Parent GameObject (NEW)
+    // [SerializeField] private GameObject cartHintPanel; // Parent GameObject (NEW)
     [SerializeField] private GameObject gameGuidePanel; // Parent GameObject (NEW)
 
     [Header("Cart Panel UI")]
@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button closeCartButton; // The 'X' button on the cart panel
     [SerializeField] private Transform cartItemContainer; // The parent object with VerticalLayoutGroup
     [SerializeField] private GameObject cartItemPrefab; // The TextMeshPro prefab for list items
-    [SerializeField] private Button finishShoppingButton; // The button to finish shopping (NEW)
+    // [SerializeField] private Button finishShoppingButton; // The button to finish shopping (NEW)
 
     [Header("Confirmation Panel UI")]
     [SerializeField] private GameObject confirmationPanel;
@@ -70,7 +70,7 @@ public class UIManager : MonoBehaviour
         if (closeButton != null) closeButton.onClick.AddListener(HideProductPanel);
         if (closeCartButton != null) closeCartButton.onClick.AddListener(HideCartPanel);
 
-        if (finishShoppingButton != null) finishShoppingButton.onClick.AddListener(OnFinishShoppingClicked);
+        // if (finishShoppingButton != null) finishShoppingButton.onClick.AddListener(OnFinishShoppingClicked);
         if (confirmEndButton != null) confirmEndButton.onClick.AddListener(OnConfirmEndClicked);
         if (cancelEndButton != null) cancelEndButton.onClick.AddListener(OnCancelEndClicked);
         if (copyCodeButton != null) copyCodeButton.onClick.AddListener(OnCopyCodeClicked);
@@ -84,7 +84,7 @@ public class UIManager : MonoBehaviour
         if (endScreenPanel != null) endScreenPanel.SetActive(false);
 
         // Activate persistent HUD elements as per client request
-        if (cartHintPanel != null) cartHintPanel.SetActive(true);
+        // if (cartHintPanel != null) cartHintPanel.SetActive(true);
         if (gameGuidePanel != null) gameGuidePanel.SetActive(true);
 
         if (GameManager.Instance != null && GameManager.Instance.cart != null)
@@ -138,8 +138,6 @@ public class UIManager : MonoBehaviour
 
         // Freeze player and show cursor
         GameEvents.TriggerSetPlayerMovement(false);
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
     }
 
     private void HideProductPanel()
@@ -150,8 +148,6 @@ public class UIManager : MonoBehaviour
 
         // Unfreeze player and hide cursor
         GameEvents.TriggerSetPlayerMovement(true);
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     private void OnAddToCartClicked()
@@ -227,17 +223,15 @@ public class UIManager : MonoBehaviour
 
         if (isOpening)
         {
+            if (productPanel.activeSelf) HideProductPanel();
+            HideInteractionPrompt();
             UpdateCartDisplay(GameManager.Instance.cart.GetItems());
 
             GameEvents.TriggerSetPlayerMovement(false);
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
         }
         else
         {
             GameEvents.TriggerSetPlayerMovement(true);
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
         }
     }
 
@@ -259,6 +253,14 @@ public class UIManager : MonoBehaviour
         if (confirmationPanel != null)
         {
             confirmationPanel.SetActive(show);
+            if (show)
+            {
+                GameEvents.TriggerSetPlayerMovement(false);
+            }
+            else
+            {
+                GameEvents.TriggerSetPlayerMovement(true);
+            }
         }
     }
 
@@ -281,7 +283,7 @@ public class UIManager : MonoBehaviour
         if (notificationPanel != null) notificationPanel.SetActive(false);
         if (cartPanel != null) cartPanel.SetActive(false);
         if (confirmationPanel != null) confirmationPanel.SetActive(false);
-        if (cartHintPanel != null) cartHintPanel.SetActive(false);
+        // if (cartHintPanel != null) cartHintPanel.SetActive(false);
         if (gameGuidePanel != null) gameGuidePanel.SetActive(false);
 
         // Show the final screen
@@ -294,6 +296,7 @@ public class UIManager : MonoBehaviour
             // Reset button text just in case
             if (copyButtonText != null) copyButtonText.text = "Copy Code";
         }
+        GameEvents.TriggerSetPlayerMovement(false);
     }
 
     private void OnCopyCodeClicked()

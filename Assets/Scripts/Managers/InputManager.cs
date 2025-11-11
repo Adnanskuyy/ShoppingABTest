@@ -11,6 +11,7 @@ public class InputManager : MonoBehaviour
     public event Action onInteractPressed;
     public event Action onCancelPressed;
     public event Action onToggleCartPressed;
+    public event Action onFinishPressed;
 
     private void Awake()
     {
@@ -41,6 +42,11 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.K))
         {
             onToggleCartPressed?.Invoke();
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            onFinishPressed?.Invoke();
         }
     }
 }

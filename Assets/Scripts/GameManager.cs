@@ -36,18 +36,24 @@ public class GameManager : MonoBehaviour
         // Subscribe to cart events
         cart.onCartUpdated += UIManager.Instance.UpdateCartDisplay;
 
-        // --- NEW A/B TEST LOGIC ---
-        // We no longer wait for ByteBrew. We ask our URL reader immediately.
+        InputManager.Instance.onFinishPressed += RequestEndExperiment;
+
         SetupABTest();
-        // --- END NEW ---
 
         // Initialize the first UI state
         UIManager.Instance.UpdateCartDisplay(cart.GetItems());
     }
 
+    private void OnDestroy()
+    {
+        if (InputManager.Instance != null)
+        {
+            InputManager.Instance.onFinishPressed -= RequestEndExperiment;
+        }
+    }
+
     private void SetupABTest()
     {
-        // Ask the UrlParameterReader what the variant is.
         string variantValue = UrlParameterReader.Instance.Variant;
 
         if (variantValue.ToUpper() == "A")
@@ -62,14 +68,6 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log($"GameManager: Set up game for Variant {currentVariant}");
-
-        // --- NEW ANALYTICS CALL ---
-        // Tell the AnalyticsManager to send the session start event,
-        // passing it the data it needs.
-        AnalyticsManager.Instance.SendSessionStartEvent(
-            currentVariant.ToString(),
-            UrlParameterReader.Instance.ParticipantID
-        );
     }
 
     public void AddItemToCart(Product product)
@@ -109,7 +107,6 @@ public class GameManager : MonoBehaviour
     private IEnumerator ExperimentTimer()
     {
         yield return new WaitForSeconds(maxExperimentDuration);
-        // If the game isn't already over, force it to end.
         TriggerExperimentEnd("Timer Expired");
     }
 

@@ -4,76 +4,83 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
-    [SerializeField] private float moveSpeed = 6.0f;
-    [SerializeField] private float gravity = -9.81f;
+    [SerializeField] private float moveSpeed = 2.0f;
+    [SerializeField] private float gravityValue = -9.81f;
 
     [Header("Look Settings")]
     [SerializeField] private Camera playerCamera;
-    [SerializeField] private float lookSpeed = 2.0f;
-    [SerializeField] private float lookXLimit = 45.0f;
+    [SerializeField] private float mouseSensitivity = 100.0f;
+    private float xRotation = 0f;
 
     private CharacterController characterController;
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;
 
-    // The critical variable that controls movement.
     private bool canMoveAndLook = true;
+    private Vector3 playerVelocity;
+    private bool isGrounded;
 
     void Start()
     {
         characterController = GetComponent<CharacterController>();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        GameEvents.onSetPlayerMovement += SetPlayerState;
 
         // --- DEBUGGING STEP 2: Confirm the subscription ---
         Debug.Log("<color=green>PlayerController:</color> Subscribing to SetPlayerMovement event.");
-        GameEvents.onSetPlayerMovement += SetMovementAndLook;
+        SetPlayerState(true);
     }
 
     private void OnDestroy()
     {
-        GameEvents.onSetPlayerMovement -= SetMovementAndLook;
+        GameEvents.onSetPlayerMovement -= SetPlayerState;
+    }
+
+    public void SetPlayerState(bool canMove)
+    {
+        canMoveAndLook = canMove;
+
+        if (canMoveAndLook)
+        {
+            // UN-FREEZE: Lock cursor, hide it
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            // FREEZE: Unlock cursor, show it
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
     }
 
     void Update()
     {
         // The Update loop now only checks the boolean.
-        if (canMoveAndLook)
+        if (!canMoveAndLook)
         {
-            HandleMovement();
-            HandleLook();
-        }
-    }
-
-    // This method is called by the event from the UIManager.
-    private void SetMovementAndLook(bool state)
-    {
-        // --- DEBUGGING STEP 3: Confirm the event was received ---
-        Debug.Log($"<color=green>PlayerController:</color> Received SetPlayerMovement event! Setting canMoveAndLook to <color=yellow>{state}</color>.");
-        canMoveAndLook = state;
-    }
-
-    private void HandleMovement()
-    {
-        Vector3 forward = transform.TransformDirection(Vector3.forward);
-        Vector3 right = transform.TransformDirection(Vector3.right);
-        float curSpeedX = moveSpeed * Input.GetAxis("Vertical");
-        float curSpeedY = moveSpeed * Input.GetAxis("Horizontal");
-        moveDirection = (forward * curSpeedX) + (right * curSpeedY);
-
-        if (!characterController.isGrounded)
-        {
-            moveDirection.y += gravity * Time.deltaTime;
+            return;
         }
 
-        characterController.Move(moveDirection * Time.deltaTime);
-    }
+        isGrounded = characterController.isGrounded;
+        if (isGrounded && playerVelocity.y < 0)
+        {
+            playerVelocity.y = 0f;
+        }
 
-    private void HandleLook()
-    {
-        rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
-        rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-        playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-        transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+        Vector3 move = transform.right * Input.GetAxis("Horizontal") + transform.forward * Input.GetAxis("Vertical");
+        characterController.Move(move * moveSpeed * Time.deltaTime);
+
+        playerVelocity.y += gravityValue * Time.deltaTime;
+        characterController.Move(playerVelocity * Time.deltaTime);
+
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+
+        xRotation -= mouseY;
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+
+        playerCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        transform.Rotate(Vector3.up * mouseX);
+
     }
 }
