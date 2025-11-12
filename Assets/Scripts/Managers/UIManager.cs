@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private float notificationDuration = 2.5f;
     // [SerializeField] private GameObject cartHintPanel; // Parent GameObject (NEW)
     [SerializeField] private GameObject gameGuidePanel; // Parent GameObject (NEW)
+    [SerializeField] private TextMeshProUGUI timerText;
 
     [Header("Cart Panel UI")]
     [SerializeField] private GameObject cartPanel; // The main parent panel GameObject
@@ -64,6 +65,7 @@ public class UIManager : MonoBehaviour
         InputManager.Instance.onCancelPressed += HideProductPanel;
         InputManager.Instance.onToggleCartPressed += ToggleCartPanel;
         GameManager.Instance.onExperimentEnded += ShowEndScreen;
+        GameEvents.onUpdateTimer += UpdateTimerText;
 
         // Set up button listeners
         if (addToCartButton != null) addToCartButton.onClick.AddListener(OnAddToCartClicked);
@@ -309,6 +311,19 @@ public class UIManager : MonoBehaviour
         {
             copyButtonText.text = "Copied!";
         }
+    }
+
+    private void UpdateTimerText(float timeLeft)
+    {
+        if (timerText == null) return;
+
+        // Ensure time doesn't go below zero
+        if (timeLeft < 0) timeLeft = 0;
+
+        // Format the time into MM:SS
+        int minutes = Mathf.FloorToInt(timeLeft / 60);
+        int seconds = Mathf.FloorToInt(timeLeft % 60);
+        timerText.text = $"{minutes:00}:{seconds:00}";
     }
 }
 

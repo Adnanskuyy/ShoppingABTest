@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     public event Action<string> onExperimentEnded;
 
     private bool isExperimentOver = false;
+    private float timeElapsed = 0f;
 
     private void Awake()
     {
@@ -42,6 +43,8 @@ public class GameManager : MonoBehaviour
 
         // Initialize the first UI state
         UIManager.Instance.UpdateCartDisplay(cart.GetItems());
+
+        StartCoroutine(ExperimentTimer());
     }
 
     private void OnDestroy()
@@ -72,16 +75,10 @@ public class GameManager : MonoBehaviour
 
     public void AddItemToCart(Product product)
     {
-        if (isExperimentOver) return; // Don't allow adding items after game ends
-
+        if (isExperimentOver) return;
         lastAddedProduct = product;
         cart.AddItem(product.productName);
         UIManager.Instance.ShowNotification(product.productName);
-
-        AnalyticsManager.Instance.SendProductAddedEvent(
-            product,
-            UrlParameterReader.Instance.ParticipantID
-        );
     }
 
     public void RequestEndExperiment()
@@ -106,31 +103,47 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator ExperimentTimer()
     {
-        yield return new WaitForSeconds(maxExperimentDuration);
+        timeElapsed = 0f; // Reset timer
+
+        while (timeElapsed < maxExperimentDuration)
+        {
+            // Only tick the timer if the game is not paused by a UI
+            if (!isExperimentOver)
+            {
+                timeElapsed += Time.deltaTime;
+                float timeLeft = maxExperimentDuration - timeElapsed;
+
+                // Fire the event to update the UI
+                GameEvents.TriggerUpdateTimer(timeLeft);
+            }
+            yield return null; // Wait for the next frame
+        }
+
+        // If the loop finishes, the timer has expired
         TriggerExperimentEnd("Timer Expired");
     }
 
     private void TriggerExperimentEnd(string reason)
     {
-        if (isExperimentOver) return; // Ensure this only runs once
+        if (isExperimentOver) return;
         isExperimentOver = true;
 
         StopAllCoroutines(); // Stops the master timer
-        GameEvents.TriggerSetPlayerMovement(false); // Freeze player
+        GameEvents.TriggerSetPlayerMovement(false);
 
+        // --- UPDATED: Generate the new code format ---
         string finalCode = GenerateFinalCode();
 
-        // Fire the event to tell the UIManager to show the final screen
         onExperimentEnded?.Invoke(finalCode);
-
         Debug.Log($"Experiment ENDED. Reason: {reason}. Final Code: {finalCode}");
     }
 
     private string GenerateFinalCode()
     {
-        // We can use the ByteBrew ID, or for simplicity, the one from the URL
         string uid = UrlParameterReader.Instance.ParticipantID;
         int items = cart.GetTotalItemCount();
-        return $"{uid}-{items}";
+        int time = Mathf.RoundToInt(timeElapsed); // Get the actual time spent
+
+        return $"{uid}-{time}-{items}";
     }
 }
