@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Collections;
 using UnityEngine;
 using ByteBrewSDK;
@@ -20,6 +21,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float maxExperimentDuration = 300f;
     public event Action<string> onExperimentEnded;
 
+    [SerializeField] private Variant thisBuildsVariant;
+    public string ParticipantID { get; private set; }
+
     private bool isExperimentOver = false;
     private float timeElapsed = 0f;
 
@@ -30,6 +34,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         cart = new ShoppingCart();
+        ParticipantID = GenerateRandomID(6);
     }
 
     private void Start()
@@ -38,6 +43,7 @@ public class GameManager : MonoBehaviour
         cart.onCartUpdated += UIManager.Instance.UpdateCartDisplay;
 
         InputManager.Instance.onFinishPressed += RequestEndExperiment;
+
 
         SetupABTest();
 
@@ -57,19 +63,6 @@ public class GameManager : MonoBehaviour
 
     private void SetupABTest()
     {
-        string variantValue = UrlParameterReader.Instance.Variant;
-
-        if (variantValue.ToUpper() == "A")
-        {
-            currentVariant = Variant.A_Trolley;
-            if (trolleyObject != null) trolleyObject.SetActive(true);
-        }
-        else
-        {
-            currentVariant = Variant.B_NoTrolley;
-            if (trolleyObject != null) trolleyObject.SetActive(false);
-        }
-
         Debug.Log($"GameManager: Set up game for Variant {currentVariant}");
     }
 
@@ -140,10 +133,22 @@ public class GameManager : MonoBehaviour
 
     private string GenerateFinalCode()
     {
-        string uid = UrlParameterReader.Instance.ParticipantID;
+        string uid = this.ParticipantID;
         int items = cart.GetTotalItemCount();
-        int time = Mathf.RoundToInt(timeElapsed); // Get the actual time spent
+        int time = Mathf.RoundToInt(timeElapsed);
 
         return $"{uid}-{time}-{items}";
+    }
+
+    private string GenerateRandomID(int length)
+    {
+        const string chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // (Removed I, 1, O, 0)
+        StringBuilder result = new StringBuilder(length);
+        System.Random rand = new System.Random();
+        for (int i = 0; i < length; i++)
+        {
+            result.Append(chars[rand.Next(chars.Length)]);
+        }
+        return result.ToString();
     }
 }

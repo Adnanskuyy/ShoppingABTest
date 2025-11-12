@@ -38,9 +38,8 @@ public class UIManager : MonoBehaviour
 
     [Header("End Screen UI")]
     [SerializeField] private GameObject endScreenPanel;
-    [SerializeField] private TextMeshProUGUI finalCodeText;
-    [SerializeField] private Button copyCodeButton;
-    [SerializeField] private TextMeshProUGUI copyButtonText;
+    [SerializeField] private TextMeshProUGUI endScreenInstructions;
+    [SerializeField] private TMP_InputField finalCodeInput;
     private Coroutine notificationCoroutine;
     private Product currentProductForPanel;
     private string generatedFinalCode;
@@ -75,7 +74,6 @@ public class UIManager : MonoBehaviour
         // if (finishShoppingButton != null) finishShoppingButton.onClick.AddListener(OnFinishShoppingClicked);
         if (confirmEndButton != null) confirmEndButton.onClick.AddListener(OnConfirmEndClicked);
         if (cancelEndButton != null) cancelEndButton.onClick.AddListener(OnCancelEndClicked);
-        if (copyCodeButton != null) copyCodeButton.onClick.AddListener(OnCopyCodeClicked);
 
         // Initial UI State
         if (interactionPrompt != null) interactionPrompt.SetActive(false);
@@ -279,38 +277,35 @@ public class UIManager : MonoBehaviour
 
     public void ShowEndScreen(string finalCode)
     {
-        // Hide ALL other UI elements first
+        // Hide ALL other UI
         if (interactionPrompt != null) interactionPrompt.SetActive(false);
         if (productPanel != null) productPanel.SetActive(false);
         if (notificationPanel != null) notificationPanel.SetActive(false);
         if (cartPanel != null) cartPanel.SetActive(false);
         if (confirmationPanel != null) confirmationPanel.SetActive(false);
-        // if (cartHintPanel != null) cartHintPanel.SetActive(false);
         if (gameGuidePanel != null) gameGuidePanel.SetActive(false);
+        if (timerText != null) timerText.gameObject.SetActive(false);
 
         // Show the final screen
         if (endScreenPanel != null)
         {
             endScreenPanel.SetActive(true);
-            generatedFinalCode = finalCode; // Store the code
-            finalCodeText.text = $"Thank you for your participation.\n\nPlease copy this completion code and paste it into the survey:\n\n{generatedFinalCode}";
 
-            // Reset button text just in case
-            if (copyButtonText != null) copyButtonText.text = "Copy Code";
+            // Set the instruction text
+            if (endScreenInstructions != null)
+            {
+                endScreenInstructions.text = "Thank you for your participation.\n\nPlease copy this completion code and paste it into the survey:";
+            }
+
+            // Set the Read-Only Input Field's text
+            if (finalCodeInput != null)
+            {
+                finalCodeInput.text = finalCode; // Set the text
+            }
         }
+
+        // This event will now also show the cursor.
         GameEvents.TriggerSetPlayerMovement(false);
-    }
-
-    private void OnCopyCodeClicked()
-    {
-        GUIUtility.systemCopyBuffer = generatedFinalCode;
-        Debug.Log($"Copied to clipboard: {generatedFinalCode}");
-
-        // Give user feedback
-        if (copyButtonText != null)
-        {
-            copyButtonText.text = "Copied!";
-        }
     }
 
     private void UpdateTimerText(float timeLeft)
