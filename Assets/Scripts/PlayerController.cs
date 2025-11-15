@@ -20,61 +20,65 @@ public class PlayerController : MonoBehaviour
     private Vector3 playerVelocity;
     private bool isGrounded;
 
-    void Start()
+    private void Start()
     {
         characterController = GetComponent<CharacterController>();
-        GameEvents.onSetPlayerMovement += SetPlayerState;
 
-        // --- DEBUGGING STEP 2: Confirm the subscription ---
-        Debug.Log("<color=green>PlayerController:</color> Subscribing to SetPlayerMovement event.");
-        SetPlayerState(true);
+        // Subscribe to the event. This is the core of our fix.
+        GameEvents.onSetPlayerMovement += SetPlayerMovement;
+
+        // Initial state
+        SetPlayerMovement(true);
     }
 
     private void OnDestroy()
     {
-        GameEvents.onSetPlayerMovement -= SetPlayerState;
+        // Always unsubscribe
+        GameEvents.onSetPlayerMovement -= SetPlayerMovement;
     }
 
-    public void SetPlayerState(bool canMove)
+    private void SetPlayerMovement(bool canMove)
     {
         canMoveAndLook = canMove;
 
         if (canMoveAndLook)
         {
-            // UN-FREEZE: Lock cursor, hide it
+            // --- RETURN TO GAME ---
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+
+            // --- NEW FIX (for WebGL) ---
+            // Tell Unity to RE-CAPTURE all keyboard input for gameplay
+#if !UNITY_EDITOR && UNITY_WEBGL
+                WebGLInput.captureAllKeyboardInput = true;
+#endif
         }
         else
         {
-            // FREEZE: Unlock cursor, show it
+            // --- FREEZE FOR UI ---
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+
+            // --- NEW FIX (for WebGL) ---
+            // Tell Unity to RELEASE keyboard input so the browser can handle
+            // keys like Ctrl+C for copy/paste.
+#if !UNITY_EDITOR && UNITY_WEBGL
+                WebGLInput.captureAllKeyboardInput = false;
+#endif
         }
     }
 
     void Update()
     {
-        // The Update loop now only checks the boolean.
+        // Only run movement/look logic if we are allowed to
         if (!canMoveAndLook)
         {
             return;
         }
 
-        isGrounded = characterController.isGrounded;
-        if (isGrounded && playerVelocity.y < 0)
-        {
-            playerVelocity.y = 0f;
-        }
-
-        Vector3 move = transform.right * Input.GetAxis("Horizontal") + transform.forward * Input.GetAxis("Vertical");
-        characterController.Move(move * moveSpeed * Time.deltaTime);
-
-        playerVelocity.y += gravityValue * Time.deltaTime;
-        characterController.Move(playerVelocity * Time.deltaTime);
-
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        // --- Mouse Look ---
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
@@ -82,5 +86,21 @@ public class PlayerController : MonoBehaviour
         playerCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
 
+        // --- Movement ---
+        bool isGrounded = characterController.isGrounded;
+        if (isGrounded && playerVelocity.y < 0)
+        {
+            playerVelocity.y = -2f; // A small negative value helps stick to ground
+        }
+
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
+
+        Vector3 move = transform.right * x + transform.forward * z;
+        characterController.Move(move * moveSpeed * Time.deltaTime);
+
+        // --- Gravity ---
+        playerVelocity.y += gravityValue * Time.deltaTime;
+        characterController.Move(playerVelocity * Time.deltaTime);
     }
 }
