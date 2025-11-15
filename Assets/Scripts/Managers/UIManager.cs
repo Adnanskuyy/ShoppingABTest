@@ -43,6 +43,7 @@ public class UIManager : MonoBehaviour
     private Coroutine notificationCoroutine;
     private Product currentProductForPanel;
     private string generatedFinalCode;
+    private GameObject currentProductGameObject;
 
     private void Awake()
     {
@@ -126,17 +127,16 @@ public class UIManager : MonoBehaviour
         interactionPrompt.SetActive(false);
     }
 
-    private void ShowProductPanel(Product product)
+    private void ShowProductPanel(Product product, GameObject productGO)
     {
-        HideInteractionPrompt(); // Ensure prompt is hidden
+        HideInteractionPrompt();
 
         currentProductForPanel = product;
+        currentProductGameObject = productGO; // Store the GameObject
         productPanel.SetActive(true);
 
-        // Update panel content
         productNameText.text = product.productName;
 
-        // Freeze player and show cursor
         GameEvents.TriggerSetPlayerMovement(false);
     }
 
@@ -152,9 +152,13 @@ public class UIManager : MonoBehaviour
 
     private void OnAddToCartClicked()
     {
-        if (currentProductForPanel != null)
+        if (currentProductForPanel != null && currentProductGameObject != null)
         {
-            GameManager.Instance.AddItemToCart(currentProductForPanel);
+            // 1. Tell GameManager to start the animation
+            GameManager.Instance.StartFlyingItemAnimation(currentProductForPanel, currentProductGameObject);
+
+            // 2. Hide this panel
+            // (We no longer call AddItemToCart here, the animation will do it)
             HideProductPanel();
         }
     }

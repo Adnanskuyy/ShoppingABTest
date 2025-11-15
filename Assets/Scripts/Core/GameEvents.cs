@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 
 // A static class to hold all game-wide events.
-// This allows for a decoupled event-driven architecture.
 public static class GameEvents
 {
     // --- UI Events ---
@@ -12,8 +11,11 @@ public static class GameEvents
     public static event Action onHideInteractionPrompt;
     public static void TriggerHideInteractionPrompt() => onHideInteractionPrompt?.Invoke();
 
-    public static event Action<Product> onShowProductPanel;
-    public static void TriggerShowProductPanel(Product product) => onShowProductPanel?.Invoke(product);
+    // --- UPDATED ---
+    // This event now passes the Product *and* the GameObject.
+    public static event Action<Product, GameObject> onShowProductPanel;
+    public static void TriggerShowProductPanel(Product product, GameObject productGO) => onShowProductPanel?.Invoke(product, productGO);
+    // --- END UPDATED ---
 
     // --- Timer Events ---
     public static event Action<float> onUpdateTimer;
@@ -23,4 +25,3 @@ public static class GameEvents
     public static event Action<bool> onSetPlayerMovement;
     public static void TriggerSetPlayerMovement(bool canMove) => onSetPlayerMovement?.Invoke(canMove);
 }
-

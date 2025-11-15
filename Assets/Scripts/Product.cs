@@ -14,7 +14,6 @@ public class Product : MonoBehaviour, IInteractable
     {
         // OLD (Error): GameEvents.onShowProductPanel?.Invoke(this);
         // NEW (Correct): Call the public trigger method instead.
-        GameEvents.TriggerShowProductPanel(this);
         Debug.Log($"Interaction triggered for {productName}. Firing event.");
         return true;
     }
