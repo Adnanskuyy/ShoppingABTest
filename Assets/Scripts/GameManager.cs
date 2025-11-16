@@ -63,6 +63,19 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.UpdateCartDisplay(cart.GetItems());
 
         // 5. Start the master timer
+        // StartCoroutine(ExperimentTimer());
+    }
+
+    /// <summary>
+    /// This is called by the UIManager's "StartButton"
+    /// to un-pause the game and begin the experiment.
+    /// </summary>
+    public void StartGame()
+    {
+        // 1. Un-freeze the player
+        GameEvents.TriggerSetPlayerMovement(true);
+
+        // 2. NOW start the 5-minute timer
         StartCoroutine(ExperimentTimer());
     }
 
@@ -83,8 +96,6 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void SetupABTest()
     {
-        // --- REFACTORED ---
-        // This was missing from your script.
         currentVariant = thisBuildsVariant; // Set the variant for the whole game
 
         if (trolleyObject != null)

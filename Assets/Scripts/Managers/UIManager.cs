@@ -40,9 +40,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject endScreenPanel;
     [SerializeField] private TextMeshProUGUI endScreenInstructions;
     [SerializeField] private TMP_InputField finalCodeInput;
+
+    [Header("Instruction Panel")]
+    [SerializeField] private GameObject instructionPanel;
+    [SerializeField] private Button startGameButton;
     private Coroutine notificationCoroutine;
     private Product currentProductForPanel;
-    private string generatedFinalCode;
     private GameObject currentProductGameObject;
 
     private void Awake()
@@ -88,9 +91,18 @@ public class UIManager : MonoBehaviour
         // if (cartHintPanel != null) cartHintPanel.SetActive(true);
         if (gameGuidePanel != null) gameGuidePanel.SetActive(true);
 
+        if (gameGuidePanel != null) gameGuidePanel.SetActive(false);
+        if (timerText != null) timerText.gameObject.SetActive(false);
+        if (instructionPanel != null) instructionPanel.SetActive(true);
+
         if (GameManager.Instance != null && GameManager.Instance.cart != null)
         {
             UpdateCartDisplay(GameManager.Instance.cart.GetItems());
+        }
+
+        if (startGameButton != null)
+        {
+            startGameButton.onClick.AddListener(OnStartGameClicked);
         }
     }
 
@@ -323,6 +335,25 @@ public class UIManager : MonoBehaviour
         int minutes = Mathf.FloorToInt(timeLeft / 60);
         int seconds = Mathf.FloorToInt(timeLeft % 60);
         timerText.text = $"{minutes:00}:{seconds:00}";
+    }
+
+    /// <summary>
+    /// Called by the StartButton on the InstructionPanel.
+    /// </summary>
+    private void OnStartGameClicked()
+    {
+        // 1. Hide this instruction panel
+        if (instructionPanel != null)
+        {
+            instructionPanel.SetActive(false);
+        }
+
+        // 2. Show the main game HUD
+        if (gameGuidePanel != null) gameGuidePanel.SetActive(true);
+        if (timerText != null) timerText.gameObject.SetActive(true);
+
+        // 3. Tell the GameManager to un-pause and start the timer
+        GameManager.Instance.StartGame();
     }
 }
 

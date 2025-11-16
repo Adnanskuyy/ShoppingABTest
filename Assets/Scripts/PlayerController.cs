@@ -18,7 +18,6 @@ public class PlayerController : MonoBehaviour
 
     private bool canMoveAndLook = true;
     private Vector3 playerVelocity;
-    private bool isGrounded;
 
     private void Start()
     {
@@ -28,7 +27,7 @@ public class PlayerController : MonoBehaviour
         GameEvents.onSetPlayerMovement += SetPlayerMovement;
 
         // Initial state
-        SetPlayerMovement(true);
+        SetPlayerMovement(false);
     }
 
     private void OnDestroy()
