@@ -32824,7 +32824,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisBuildsVariant: 1
-  enableItemAnimation: 0
+  enableItemAnimation: 1
   trolleyObject: {fileID: 1209194506}
   maxExperimentDuration: 300
   basketTarget: {fileID: 848226605}
@@ -77670,7 +77670,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Instuctions:\r\n\r\nEnter the virtual supermarkte to choose groceries
+  m_text: "Instuctions:\r\n\r\nEnter the virtual supermarket to choose groceries
     for your dinner.\r\nYou are not holding a virtual shopping basket in your hand\r\n\r\nWalk
     through the aisles, look around, and select items you'd like to buy:\r\n\r\n\_*
     Press E to Interact and click \"Add to cart\"\r\n\_* Press K to view your cart
