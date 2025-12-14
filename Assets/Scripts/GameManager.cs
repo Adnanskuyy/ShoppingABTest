@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     [Header("BUILD CONFIGURATION")]
     [Tooltip("Set this to 'A' for the Trolley/Arm build, or 'B' for the No Trolley/Arm build. THIS MUST BE SET BEFORE BUILDING.")]
     [SerializeField] private Variant thisBuildsVariant;
+    [Tooltip("Check this box to enable the 'flying item' animation.")]
+    [SerializeField] private bool enableItemAnimation;
 
     [Header("Variant Setup")]
     [SerializeField] private GameObject trolleyObject; // The arm/basket ViewModel rig
@@ -24,7 +26,7 @@ public class GameManager : MonoBehaviour
     [Tooltip("How long the 'fly to cart' animation should take in seconds.")]
     [SerializeField] private float flyAnimationDuration = 0.75f;
 
-    // This event fires when the experiment ends, passing the final code.
+
     public event Action<string> onExperimentEnded;
 
     // --- Public Properties ---
@@ -33,6 +35,7 @@ public class GameManager : MonoBehaviour
     public Variant currentVariant { get; private set; }
     public enum Variant { A_Trolley, B_NoTrolley }
     public string ParticipantID { get; private set; }
+    public bool IsAnimationEnabled { get; private set; }
 
     // --- Private State ---
     private bool isExperimentOver = false;
@@ -49,6 +52,9 @@ public class GameManager : MonoBehaviour
         cart = new ShoppingCart();
         // 2. Generate the random ID for this session
         ParticipantID = GenerateRandomID(6);
+
+        currentVariant = thisBuildsVariant;
+        IsAnimationEnabled = enableItemAnimation;
         // 3. Set the variant based on the Inspector setting
         SetupABTest();
     }
@@ -112,8 +118,19 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void StartFlyingItemAnimation(Product product, GameObject originalObject)
     {
+
         if (isExperimentOver) return;
 
+        if (!IsAnimationEnabled)
+        {
+            // --- BUG FIX ---
+            // Animation is OFF.
+            // We just add the item immediately and unfreeze.
+            AddItemToCartInternal(product);
+            GameEvents.TriggerSetPlayerMovement(true);
+            // --- END BUG FIX ---
+            return;
+        }
         // Freeze the player (this is your brilliant idea)
         GameEvents.TriggerSetPlayerMovement(false);
 
@@ -145,8 +162,7 @@ public class GameManager : MonoBehaviour
         // so it can see both the item and the basket.
         Camera.main.cullingMask |= (1 << LayerMask.NameToLayer("ViewModel"));
 
-        float
-        elapsed = 0f;
+        float elapsed = 0f;
         Vector3 startPos = itemToFly.transform.position;
         Vector3 startScale = itemToFly.transform.localScale;
 
@@ -169,10 +185,7 @@ public class GameManager : MonoBehaviour
         // --- Animation Finished ---
         Destroy(itemToFly); // Clean up the duplicate
 
-        // --- This is the logic from the old AddItemToCart() method ---
-        lastAddedProduct = productToAdd;
-        cart.AddItem(productToAdd.productName);
-        UIManager.Instance.ShowNotification(productToAdd.productName);
+        AddItemToCartInternal(productToAdd);
 
         // Tell the Main Camera to STOP seeing the ViewModel layer.
         Camera.main.cullingMask &= ~(1 << LayerMask.NameToLayer("ViewModel"));
@@ -250,5 +263,14 @@ public class GameManager : MonoBehaviour
             result.Append(chars[rand.Next(chars.Length)]);
         }
         return result.ToString();
+    }
+
+    private void AddItemToCartInternal(Product product)
+    {
+        lastAddedProduct = product;
+        cart.AddItem(product.productName);
+        UIManager.Instance.ShowNotification(product.productName);
+
+        // Analytics call is removed, as you requested.
     }
 }

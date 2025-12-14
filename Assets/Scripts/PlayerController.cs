@@ -69,6 +69,15 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (canMoveAndLook && Cursor.lockState != CursorLockMode.Locked)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+        }
+
         // Only run movement/look logic if we are allowed to
         if (!canMoveAndLook)
         {

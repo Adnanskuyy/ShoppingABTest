@@ -29,7 +29,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button closeCartButton; // The 'X' button on the cart panel
     [SerializeField] private Transform cartItemContainer; // The parent object with VerticalLayoutGroup
     [SerializeField] private GameObject cartItemPrefab; // The TextMeshPro prefab for list items
-    // [SerializeField] private Button finishShoppingButton; // The button to finish shopping (NEW)
+    [SerializeField] private TextMeshProUGUI totalItemsText;
 
     [Header("Confirmation Panel UI")]
     [SerializeField] private GameObject confirmationPanel;
@@ -192,7 +192,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateCartDisplay(Dictionary<string, int> cartItems)
     {
-        // 2. Update Cart Panel List (Only if the panel and container exist)
+        // 1. Update the Visual List (This part was already working)
         if (cartPanel != null && cartItemContainer != null && cartItemPrefab != null)
         {
             // Clear previous items
@@ -201,17 +201,16 @@ public class UIManager : MonoBehaviour
                 Destroy(child.gameObject);
             }
 
-            // Instantiate new items if the cart panel is currently active
+            // Instantiate new items
             if (cartPanel.activeSelf)
             {
                 if (cartItems.Count == 0)
                 {
-                    // Optional: Display a "Cart is empty" message
                     GameObject emptyMsg = Instantiate(cartItemPrefab, cartItemContainer);
                     if (emptyMsg.TryGetComponent<TextMeshProUGUI>(out var textComponent))
                     {
                         textComponent.text = "Cart is empty";
-                        textComponent.fontStyle = FontStyles.Italic; // Make it look different
+                        textComponent.fontStyle = FontStyles.Italic;
                     }
                 }
                 else
@@ -228,6 +227,20 @@ public class UIManager : MonoBehaviour
                 }
             }
         }
+
+        // --- THE FIX: Update the Total Text HERE ---
+        if (totalItemsText != null)
+        {
+            // Recalculate the total from the dictionary directly
+            int totalCount = 0;
+            foreach (int qty in cartItems.Values)
+            {
+                totalCount += qty;
+            }
+
+            // Update the text label
+            totalItemsText.text = $"Total Items: {totalCount}";
+        }
     }
 
     private void ToggleCartPanel()
@@ -242,6 +255,12 @@ public class UIManager : MonoBehaviour
             if (productPanel.activeSelf) HideProductPanel();
             HideInteractionPrompt();
             UpdateCartDisplay(GameManager.Instance.cart.GetItems());
+
+            if (totalItemsText != null)
+            {
+                int totalCount = GameManager.Instance.cart.GetTotalItemCount();
+                totalItemsText.text = $"Total Items: {totalCount}";
+            }
 
             GameEvents.TriggerSetPlayerMovement(false);
         }
@@ -316,7 +335,15 @@ public class UIManager : MonoBehaviour
             // Set the Read-Only Input Field's text
             if (finalCodeInput != null)
             {
-                finalCodeInput.text = finalCode; // Set the text
+                if (finalCodeInput.TryGetComponent<CodeEnforcer>(out var enforcer))
+                {
+                    enforcer.SetFinalCode(finalCode);
+                }
+                else
+                {
+                    // Fallback if script is missing
+                    finalCodeInput.text = finalCode;
+                }
             }
         }
 
